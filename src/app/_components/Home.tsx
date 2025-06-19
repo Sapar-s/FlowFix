@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const faqList = [
   { q: "Нойл хаана байдаг вэ?", a: "Нойл 1-р давхрын баруун талд байрладаг." },
@@ -59,13 +60,13 @@ export default function PetWidget() {
       {/* Pet icon */}
       <motion.div
         drag
-        className="w-16 h-16 bg-white border shadow-md rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition"
+        className="w-16 h-16  flex items-center justify-center cursor-pointer hover:scale-110 transition"
         onClick={() => {
           setOpen(!open);
           setNotification(0);
         }}
       >
-        🐰
+        <Image alt="" src={"/pikachu.png"} width={64} height={64} />
       </motion.div>
 
       {/* Popup */}
@@ -74,10 +75,11 @@ export default function PetWidget() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          className="absolute bottom-20 right-0 bg-white w-[300px] p-4 rounded-2xl shadow-xl border space-y-2"
+          className="absolute bottom-20 right-0 w-[300px] p-4 rounded-2xl shadow-xl border space-y-2"
         >
           <div className="text-center text-lg font-semibold text-gray-700">
-            Сайн уу! 🐰
+            Сайн уу!{" "}
+            <Image alt="" src={"/pikachu.png"} width={64} height={64} />
           </div>
           <div className="text-sm text-gray-600">
             Би туслагч туулай байна. Та асуултаа бичих эсвэл сонгоно уу.
