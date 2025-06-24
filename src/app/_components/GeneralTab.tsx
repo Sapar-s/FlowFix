@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings } from "./Settings";
 import Questions from "./Question";
 import Buddy from "./Buddy";
+import Todo from "./Todo";
 
 export default function GeneralTab() {
   return (
@@ -20,7 +21,9 @@ export default function GeneralTab() {
         <TabsContent value="Buddy">
           <Buddy />
         </TabsContent>
-        <TabsContent value="Todo"></TabsContent>
+        <TabsContent value="Todo">
+          <Todo />
+        </TabsContent>
         <TabsContent value="Settings">
           <Settings />
         </TabsContent>
