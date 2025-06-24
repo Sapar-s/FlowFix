@@ -1,6 +1,8 @@
 import { DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings } from "./Settings";
+import Questions from "./Question";
+import Buddy from "./Buddy";
 
 export default function GeneralTab() {
   return (
@@ -12,8 +14,12 @@ export default function GeneralTab() {
           <TabsTrigger value="Todo">Todo</TabsTrigger>
           <TabsTrigger value="Settings">Settings</TabsTrigger>
         </TabsList>
-        <TabsContent value="Question"></TabsContent>
-        <TabsContent value="Buddy"></TabsContent>
+        <TabsContent value="Question">
+          <Questions />
+        </TabsContent>
+        <TabsContent value="Buddy">
+          <Buddy />
+        </TabsContent>
         <TabsContent value="Todo"></TabsContent>
         <TabsContent value="Settings">
           <Settings />

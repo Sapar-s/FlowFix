@@ -18,8 +18,8 @@ const questions = [
 
 export default function Questions() {
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <Card className="w-[904px] h-[618px] bg-white shadow-xl flex flex-col">
+    <div className=" flex items-center justify-center p-4">
+      <Card className="w-full flex flex-col">
         <CardHeader>
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">

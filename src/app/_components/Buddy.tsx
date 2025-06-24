@@ -17,8 +17,8 @@ export default function Buddy() {
   const [selectedCharacter, setSelectedCharacter] = useState(0);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <div className="w-[904px] h-[618px] bg-white shadow-xl rounded-lg flex items-center justify-center">
+    <div className="flex items-center justify-center p-4">
+      <div className="w-full flex items-center justify-center">
         <div className="flex items-center space-x-4">
           <Button
             variant="ghost"
