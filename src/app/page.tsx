@@ -1,9 +1,9 @@
-import AvatarIconPet from "./_components/AvatarIconPet";
+import OfficeLayout from "./_components/OfficeLayout";
 
 export default function Home() {
   return (
     <div className="w-full h-screen bg-[#fff] relative">
-      <AvatarIconPet />
+      <OfficeLayout />
     </div>
   );
 }
