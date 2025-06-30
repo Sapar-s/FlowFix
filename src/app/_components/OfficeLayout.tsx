@@ -3,18 +3,23 @@
 import React, { useState } from "react";
 import WorkstationGroup from "./WorkstationGroup";
 import RightSheet from "./RightSheet";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const OfficeLayout: React.FC = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isInOffice, setIsInOffice] = useState(true);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const computerImages = [
-    "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751257079/back1_kjqbwi.png",
-    "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751257088/back2_q2dfxp.png",
-    "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751257096/back3_zoqaop.png",
-    "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751257006/front1_znibuk.png",
-    "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751257058/front2_ewqpb5.png",
-    "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751257069/front3_hjjzlm.png",
-  ];
+  const toggleStatus = (newStatus: boolean) => {
+    setIsInOffice(newStatus);
+    setIsPopoverOpen(false);
+    // Here you would typically make an API call to update the status
+  };
 
   const workstationData = Array(4).fill({
     topRow: [
@@ -30,30 +35,10 @@ const OfficeLayout: React.FC = () => {
   });
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#D4C4A8",
-        backgroundImage: `
-          linear-gradient(90deg, rgba(139, 125, 107, 0.1) 1px, transparent 1px),
-          linear-gradient(rgba(139, 125, 107, 0.1) 1px, transparent 1px)
-        `,
-        backgroundSize: "20px 20px",
-        padding: "20px",
-        position: "relative",
-      }}
-    >
+    <div className="min-h-screen  bg-[#414141] p-5 relative">
+      <div className="absolute inset-0 bg-noise opacity-20 pointer-events-none"></div>
       {/* Main Content */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "40px",
-          maxWidth: "1200px",
-          margin: "60px auto 100px",
-          padding: "20px",
-        }}
-      >
+      <div className="grid grid-cols-2 gap-10 max-w-[1200px] mx-auto my-[60px] mb-[100px] p-5">
         {workstationData.map((workstation, index) => (
           <WorkstationGroup
             key={index}
@@ -67,49 +52,51 @@ const OfficeLayout: React.FC = () => {
       </div>
 
       {/* Footer Buttons */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          left: "20px",
-          right: "20px",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <button
-          style={{
-            backgroundColor: "white",
-            border: "1px solid #e2e8f0",
-            borderRadius: "20px",
-            padding: "12px 20px",
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "#4A5568",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          🏠 Зайнаас ажиллах байна
-        </button>
+      <div className="fixed bottom-5 left-5 right-5 flex justify-between">
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="rounded-full px-4 py-3  gap-2 w-[291px] text-[16px] font-[400] "
+            >
+              {isInOffice ? (
+                <>🧑‍💻 Оффис дээр байна</>
+              ) : (
+                <>🏠 Зайнаас ажиллаж байна</>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[291px] p-2" align="start">
+            <div className="flex flex-col space-y-1">
+              <button
+                onClick={() => toggleStatus(true)}
+                className="flex items-center justify-between gap-2 cursor-pointer p-2 rounded hover:bg-gray-100 text-left"
+              >
+                <h4>🧑‍💻 Оффис дээр байна</h4>{" "}
+                {isInOffice ? (
+                  <div className="rounded-[99px] border border-[rgba(0,0,0,0.10)] bg-[#684DFF] shadow-[inset_-1px_2px_2px_rgba(255,255,255,0.24)] w-4 h-4"></div>
+                ) : (
+                  <div className="w-4 h-4 rounded-[99px] border  border-black/10 bg-white shadow-[inset_-1px_2px_2px_rgba(0,0,0,0.08)]"></div>
+                )}
+              </button>
+              <button
+                onClick={() => toggleStatus(false)}
+                className="flex items-center justify-between gap-2 cursor-pointer p-2 rounded hover:bg-gray-100 text-left"
+              >
+                <h4>🏠 Зайнаас ажиллаж байна</h4>{" "}
+                {isInOffice ? (
+                  <div className="w-4 h-4 rounded-[99px] border  border-black/10 bg-white shadow-[inset_-1px_2px_2px_rgba(0,0,0,0.08)]"></div>
+                ) : (
+                  <div className="rounded-[99px] border border-[rgba(0,0,0,0.10)] bg-[#684DFF] shadow-[inset_-1px_2px_2px_rgba(255,255,255,0.24)] w-4 h-4"></div>
+                )}
+              </button>
+            </div>
+          </PopoverContent>
+        </Popover>
 
         <button
           onClick={() => setIsSheetOpen(true)}
-          style={{
-            backgroundColor: "white",
-            border: "1px solid #e2e8f0",
-            borderRadius: "20px",
-            padding: "12px 20px",
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "#4A5568",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
+          className="bg-white border border-[#e2e8f0] rounded-full py-3 px-5 text-sm font-medium text-[#4A5568] cursor-pointer flex items-center gap-2"
         >
           Санал хураалт {">"}
         </button>

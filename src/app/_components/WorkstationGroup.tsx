@@ -19,34 +19,20 @@ const WorkstationGroup: React.FC<WorkstationProps> = ({
   deskImage,
 }) => {
   const renderRow = (row: Employee[], isTop: boolean) => (
-    <div style={{ display: "flex", gap: "100px", justifyContent: "center" }}>
+    <div className="flex gap-[100px] justify-center">
       {row.map((employee, index) => (
         <div
           key={`${isTop ? "top" : "bottom"}-${index}`}
-          style={{ textAlign: "center" }}
+          className="text-center"
         >
           {isTop && (
-            <div
-              style={{
-                fontSize: "12px",
-                color: "#2d3748",
-                fontWeight: "bold",
-                marginBottom: "4px",
-              }}
-            >
+            <div className="text-xs text-[#2d3748] font-bold mb-1">
               {employee.name}
             </div>
           )}
-          <div style={{ fontSize: "28px" }}>{employee.avatar}</div>
+          <div className="text-2xl">{employee.avatar}</div>
           {!isTop && (
-            <div
-              style={{
-                fontSize: "12px",
-                color: "#2d3748",
-                fontWeight: "bold",
-                marginTop: "4px",
-              }}
-            >
+            <div className="text-xs text-[#2d3748] font-bold mt-1">
               {employee.name}
             </div>
           )}
@@ -56,27 +42,13 @@ const WorkstationGroup: React.FC<WorkstationProps> = ({
   );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        alignItems: "center",
-        margin: "40px auto",
-        width: "fit-content",
-      }}
-    >
+    <div className="flex flex-col gap-5 items-center my-10 mx-auto w-fit">
       {renderRow(topRow, true)}
 
       <img
         src={deskImage}
         alt="Shared Desk"
-        style={{
-          width: "100%", // эсвэл 400-600px гэж ч болно
-          maxWidth: "400px",
-          height: "auto",
-          objectFit: "contain",
-        }}
+        className="w-full max-w-[400px] h-auto object-contain"
       />
 
       {renderRow(bottomRow, false)}
