@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 interface RightSheetProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ interface RightSheetProps {
 const RightSheet: React.FC<RightSheetProps> = ({ isOpen, onClose }) => {
   const [selectedPoll, setSelectedPoll] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const polls = [
     {
@@ -52,6 +54,17 @@ const RightSheet: React.FC<RightSheetProps> = ({ isOpen, onClose }) => {
   const handlePollSelect = (index: number) => {
     setSelectedPoll(index);
     setSelectedOption("");
+  };
+
+  const handleSubmit = () => {
+    setLoading(true);
+    toast.success(`Санал: ${selectedOption} илгээгдлээ!`);
+    setTimeout(() => {
+      setLoading(false);
+      setSelectedPoll(null);
+      setSelectedOption("");
+      onClose();
+    }, 1000);
   };
 
   return (
@@ -126,8 +139,12 @@ const RightSheet: React.FC<RightSheetProps> = ({ isOpen, onClose }) => {
                 >
                   Буцах
                 </Button>
-                <Button className="flex-1" disabled={!selectedOption}>
-                  Илгээх
+                <Button
+                  onClick={handleSubmit}
+                  className="flex-1 cursor-pointer"
+                  disabled={!selectedOption}
+                >
+                  {loading ? "Илгээж байна..." : "Илгээх"}
                 </Button>
               </div>
             </div>
