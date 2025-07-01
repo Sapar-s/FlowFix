@@ -1,26 +1,18 @@
 import mongoose from "mongoose";
-import { configDotenv } from "dotenv";
+import dotenv from "dotenv";
 
-configDotenv();
+dotenv.config();
 
-let isConnected = false;
-
-const dbConnect = async () => {
-  if (isConnected) {
-    return;
-  }
-
+const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URL || "", {
-      dbName: "FlowFix",
-    });
+    if (!process.env.MONGODB_URL) throw new Error("Missing MongoDB URI");
 
-    isConnected = true;
-    console.log("✅ MongoDB-тэй амжилттай холбогдлоо.");
-  } catch (error) {
-    console.error("❌ MongoDB-тэй холбогдоход алдаа гарлаа:", error);
-    throw error;
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log("✅ MongoDB connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1);
   }
 };
 
-export default dbConnect;
+export default connectDB;

@@ -1,55 +1,65 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WorkstationGroup from "./WorkstationGroup";
 import RightSheet from "./RightSheet";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ChevronRight, ChevronUp } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const OfficeLayout: React.FC = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isInOffice, setIsInOffice] = useState(true);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const id = searchParams.get("_id");
+  const [users, setUsers] = useState([]);
 
-  const toggleStatus = (newStatus: boolean) => {
+  const toggleStatus = async (newStatus: boolean) => {
     setIsInOffice(newStatus);
-    setIsPopoverOpen(false);
-    // Here you would typically make an API call to update the status
+    try {
+      const res = await axios.put("/api/changeStatus", {
+        _id: id,
+        status: newStatus == true ? "office" : "remote",
+      });
+
+      alert("amjilttai soligdloo ");
+      setIsPopoverOpen(false);
+      console.log("res", res);
+    } catch (error) {
+      console.log("error", error);
+      alert("aldaa garlaa");
+    }
   };
 
-  const workstationData = Array(4).fill({
-    topRow: [
-      { name: "Tsatsa", avatar: "🐸" },
-      { name: "namu", avatar: "⚡" },
-      { name: "Hulan", avatar: "🖤" },
-    ],
-    bottomRow: [
-      { name: "nemhe", avatar: "🐸" },
-      { name: "Zorig", avatar: "🦁" },
-      { name: "Odnoo", avatar: "🌿" },
-    ],
-  });
+  const getAllUsers = async () => {
+    try {
+      const res = await axios.get("/api/login");
+
+      setUsers(res.data);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  console.log("users", users);
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   return (
-    <div className="min-h-screen  bg-[#414141] p-5 relative">
+    <div className="min-h-screen bg-[url('/container.jpg')] bg-cover bg-center relative">
       <div className="absolute inset-0 bg-noise opacity-20 pointer-events-none"></div>
       {/* Main Content */}
-      <div className="grid grid-cols-2 gap-10 max-w-[1200px] mx-auto my-[60px] mb-[100px] p-5">
-        {workstationData.map((workstation, index) => (
-          <WorkstationGroup
-            key={index}
-            topRow={workstation.topRow}
-            bottomRow={workstation.bottomRow}
-            deskImage={
-              "https://res.cloudinary.com/da2ltmfaf/image/upload/v1751265465/officeSetup_o57ipn.png"
-            }
-          />
-        ))}
-      </div>
+
+      <WorkstationGroup employees={users} />
 
       {/* Footer Buttons */}
       <div className="fixed bottom-5 left-5 right-5 flex justify-between">
@@ -57,12 +67,16 @@ const OfficeLayout: React.FC = () => {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="rounded-full px-4 py-3  gap-2 w-[291px] text-[16px] font-[400] "
+              className="rounded-full px-4 py-3 cursor-pointer gap-2 w-[291px] flex justify-between text-[16px] font-[400] "
             >
               {isInOffice ? (
-                <>🧑‍💻 Оффис дээр байна</>
+                <>
+                  🧑‍💻 Оффис дээр байна <ChevronUp />
+                </>
               ) : (
-                <>🏠 Зайнаас ажиллаж байна</>
+                <>
+                  🏠 Зайнаас ажиллаж байна <ChevronUp />
+                </>
               )}
             </Button>
           </PopoverTrigger>
@@ -98,7 +112,7 @@ const OfficeLayout: React.FC = () => {
           onClick={() => setIsSheetOpen(true)}
           className="bg-white border border-[#e2e8f0] rounded-full py-3 px-5 text-sm font-medium text-[#4A5568] cursor-pointer flex items-center gap-2"
         >
-          Санал хураалт {">"}
+          Санал хураалт <ChevronRight />
         </button>
       </div>
 

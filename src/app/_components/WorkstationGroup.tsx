@@ -1,58 +1,61 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 
 interface Employee {
   name: string;
-  avatar: string;
+  buddyUrl: string;
+  status: string;
 }
 
 interface WorkstationProps {
-  topRow: Employee[];
-  bottomRow: Employee[];
-  deskImage: string; // ганц ширээний зураг
+  employees: Employee[];
 }
 
-const WorkstationGroup: React.FC<WorkstationProps> = ({
-  topRow,
-  bottomRow,
-  deskImage,
-}) => {
-  const renderRow = (row: Employee[], isTop: boolean) => (
-    <div className="flex gap-[100px] justify-center">
-      {row.map((employee, index) => (
-        <div
-          key={`${isTop ? "top" : "bottom"}-${index}`}
-          className="text-center"
-        >
-          {isTop && (
-            <div className="text-xs text-[#2d3748] font-bold mb-1">
-              {employee.name}
-            </div>
-          )}
-          <div className="text-2xl">{employee.avatar}</div>
-          {!isTop && (
-            <div className="text-xs text-[#2d3748] font-bold mt-1">
-              {employee.name}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
+const seatPositions: { [key: string]: { top: number; left: number }[] } = {
+  office: [
+    { top: 70, left: 130 },
+    { top: 70, left: 360 },
+    { top: 70, left: 590 },
+    { top: 240, left: 130 },
+    { top: 240, left: 360 },
+    { top: 240, left: 590 },
+    { top: 410, left: 360 },
+  ],
+};
 
+const WorkstationGroup: React.FC<WorkstationProps> = ({ employees }) => {
   return (
-    <div className="flex flex-col gap-5 items-center my-10 mx-auto w-fit">
-      {renderRow(topRow, true)}
+    <>
+      {employees.map((employee, index) => {
+        const position = seatPositions.office[index];
+        if (!position) return null;
 
-      <img
-        src={deskImage}
-        alt="Shared Desk"
-        className="w-full max-w-[400px] h-auto object-contain"
-      />
-
-      {renderRow(bottomRow, false)}
-    </div>
+        return (
+          <div
+            key={index}
+            className="absolute text-center text-white"
+            style={{
+              top: position.top,
+              left: position.left,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <div className="text-xs font-bold mb-1">{employee.name}</div>
+            <div className="text-2xl">
+              <Image
+                src={employee.buddyUrl}
+                alt={employee.name}
+                width={50}
+                height={50}
+                className="rounded-full"
+              />
+            </div>
+          </div>
+        );
+      })}
+    </>
   );
 };
 
