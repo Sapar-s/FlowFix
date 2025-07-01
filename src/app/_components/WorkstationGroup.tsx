@@ -13,6 +13,7 @@ interface Employee {
 interface WorkstationProps {
   employees: Employee[];
   id: string | null;
+  isInOffice: boolean;
 }
 
 const seatPositions: { [key: string]: { top: number; left: number }[] } = {
@@ -38,16 +39,24 @@ const seatPositions: { [key: string]: { top: number; left: number }[] } = {
   ],
 };
 
-const WorkstationGroup: React.FC<WorkstationProps> = ({ employees, id }) => {
-  const getEmoji = (status: string) => {
-    switch (status) {
-      case "office":
-        return "🧑🏻‍💻"; // Office emoji
-      case "remote":
-        return "🏠"; // Home emoji
-      default:
-        return "❓"; // Unknown status emoji
+const WorkstationGroup: React.FC<WorkstationProps> = ({
+  employees,
+  id,
+  isInOffice,
+}) => {
+  const getEmoji = () => {
+    if (isInOffice) {
+      return "🧑‍💻"; // Office emoji
     }
+    return "🏠"; // Home emoji
+    // switch (status) {
+    //   case "office":
+    //     return "🧑‍💻"; // Office emoji
+    //   case "remote":
+    //     return "🏠"; // Home emoji
+    //   default:
+    //     return "❓"; // Unknown status emoji
+    // }
   };
   return (
     <>
@@ -66,11 +75,11 @@ const WorkstationGroup: React.FC<WorkstationProps> = ({ employees, id }) => {
             }}
           >
             <div
-              className={`text-xs font-bold mb-1 rounded-full p-1 ${
-                employee._id === id ? "bg-white text-black" : "bg-gray-800"
+              className={`text-xs font-bold mb-1 rounded-full py-2 px-4 text-[14px] ${
+                employee._id === id ? "bg-white text-black" : "bg-[#000]/60 "
               }`}
             >
-              <span className="mr-2">{getEmoji(employee.status)}</span>
+              <span className="mr-2">{getEmoji()}</span>
               {employee.name}
             </div>
             <div className="text-2xl">

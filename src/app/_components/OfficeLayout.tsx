@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/popover";
 import { ChevronRight, ChevronUp } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 const OfficeLayout: React.FC = () => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -29,12 +30,16 @@ const OfficeLayout: React.FC = () => {
         status: newStatus == true ? "office" : "remote",
       });
 
-      alert("amjilttai soligdloo ");
+      toast.success(
+        `Таны статусыг ${
+          newStatus ? "Оффис дээр" : "Зайнаас"
+        } ажиллаж байна гэж өөрчлөгдлөө!`
+      );
       setIsPopoverOpen(false);
       console.log("res", res);
     } catch (error) {
       console.log("error", error);
-      alert("aldaa garlaa");
+      toast.error("Алдаа гарлаа");
     }
   };
 
@@ -59,7 +64,7 @@ const OfficeLayout: React.FC = () => {
       <div className="absolute inset-0 bg-noise opacity-20 pointer-events-none"></div>
       {/* Main Content */}
 
-      <WorkstationGroup employees={users} id={id} />
+      <WorkstationGroup employees={users} id={id} isInOffice={isInOffice} />
 
       {/* Footer Buttons */}
       <div className="fixed bottom-5 left-5 right-5 flex justify-between">
@@ -80,7 +85,10 @@ const OfficeLayout: React.FC = () => {
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[291px] p-2" align="start">
+          <PopoverContent
+            className="w-[291px] rounded-[16px] p-2"
+            align="start"
+          >
             <div className="flex flex-col space-y-1">
               <button
                 onClick={() => toggleStatus(true)}
