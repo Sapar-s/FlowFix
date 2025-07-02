@@ -49,7 +49,7 @@ const WorkstationGroup: React.FC<WorkstationProps> = ({ employees, id }) => {
   const [assignedSeats, setAssignedSeats] = useState<{
     [userId: string]: number;
   }>({});
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(2);
 
   const seats = seatPositions.office;
 
