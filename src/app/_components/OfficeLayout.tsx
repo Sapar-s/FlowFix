@@ -60,11 +60,11 @@ const OfficeLayout: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-screen h-screen bg-[url('/container.jpg')] bg-cover relative bg-[20%_30%]">
+    <div className="w-screen h-screen relatve overflow-hidden">
       <div className="absolute inset-0 bg-noise opacity-20 pointer-events-none"></div>
       {/* Main Content */}
 
-      <WorkstationGroup employees={users} id={id} isInOffice={isInOffice} />
+      <WorkstationGroup employees={users} id={id} />
 
       {/* Footer Buttons */}
       <div className="fixed bottom-5 left-5 right-5 flex justify-between">
